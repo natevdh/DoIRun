@@ -4,6 +4,8 @@ SET ANSI_NULLS ON
 GO
 
 
+
+
 /*
 	This View is here to give you a general idea of if the AGRun steps have been added and if they have been configured correctly.
 
@@ -17,9 +19,9 @@ GO
 		2. If the config is currently missing
 		3. If the Step1 and Step2 are not using the same config name 
 
-	Github Link: https://github.com/natevdh/natevdhSQLScripts/tree/master/AGRun
+	Github Link: https://github.com/natevdh/SQLJobDoIRun/
 */
-CREATE VIEW [SQLJob].[AGRunReviewer]
+CREATE VIEW [SQLJob].[DoIRunReviewer]
 AS
 SELECT j2.SQLAgentJobName
 	,CASE 
@@ -32,9 +34,9 @@ SELECT j2.SQLAgentJobName
 		WHEN j2.AGRunConfigName <> ISNULL(j2.AGRunConfigNameStep2,'<MISSING>')
 			THEN 'Error-Steps for AGRun are not using same config'
 		ELSE 'AGRun Steps Configured'
-		END AS AGRunStatus
-	,j2.AGRunConfigName
-	,arc.DriverDatabase AS AGRunDriverDatabase
+		END AS DoIRunStatus
+	,j2.AGRunConfigName AS DoIRunConfigName
+	,arc.DriverDatabase AS DoIRunDriverDatabase
 	,arc.RunIfNotInAG
 	,j2.RealStartStepID
 	,jsStart.step_name AS RealStartStepName
@@ -82,5 +84,5 @@ FROM (
 LEFT JOIN msdb.dbo.sysjobsteps jsStart 
 	ON jsStart.job_id = j2.job_id 
 	AND jsStart.step_id = j2.RealStartStepID	
-LEFT JOIN SQLJob.AGRunConfig arc ON arc.AGRunConfigName = j2.AGRunConfigName
+LEFT JOIN SQLJob.DoIRunConfig arc ON arc.DoIRunConfigName = j2.AGRunConfigName
 GO

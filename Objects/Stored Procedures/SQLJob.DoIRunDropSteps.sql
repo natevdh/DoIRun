@@ -12,9 +12,9 @@ GO
 		EXEC SQLJob.AGRunDropSteps 
 			@SQLAgentJobName = 'AGDemo - Simple Job 1'
 
-	Github Link: https://github.com/natevdh/natevdhSQLScripts/tree/master/AGRun
+	Github Link: https://github.com/natevdh/SQLJobDoIRun/
 */
-CREATE PROCEDURE [SQLJob].[AGRunDropSteps] (
+CREATE PROCEDURE [SQLJob].[DoIRunDropSteps] (
 	@SQLAgentJobName sysname
 )
 AS

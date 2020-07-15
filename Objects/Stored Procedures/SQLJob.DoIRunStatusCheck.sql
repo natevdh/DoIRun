@@ -11,10 +11,10 @@ GO
 			Step 1 Does the config verification and runs the check to see if it should run or not
 		@ConfigName - Name of the config value in AG.DRJobConfig
 
-	Github Link: https://github.com/natevdh/natevdhSQLScripts/tree/master/AGRun
+	Github Link: https://github.com/natevdh/SQLJobDoIRun/
 
 */
-CREATE PROCEDURE [SQLJob].[AGRunStatusCheck] (
+CREATE PROCEDURE [SQLJob].[DoIRunStatusCheck] (
 	@JobStepID TINYINT
 	,@AGRunConfigName VARCHAR(100)
 )
@@ -43,8 +43,8 @@ BEGIN
 		BEGIN --Config Verification
 			IF NOT EXISTS (
 				SELECT 1
-				FROM SQLJob.AGRunConfig djc
-				WHERE djc.AGRunConfigName = @AGRunConfigName
+				FROM SQLJob.DoIRunConfig djc
+				WHERE djc.DoIRunConfigName = @AGRunConfigName
 			)
 			BEGIN
 				SELECT @ErrorText = 'Could not find a config matching @AGRunConfigName'
@@ -53,8 +53,8 @@ BEGIN
 
 			SELECT @DriverDatabase = djc.DriverDatabase
 				,@RunIfNotInAG = djc.RunIfNotInAG
-			FROM SQLJob.AGRunConfig djc
-			WHERE djc.AGRunConfigName = @AGRunConfigName
+			FROM SQLJob.DoIRunConfig djc
+			WHERE djc.DoIRunConfigName = @AGRunConfigName
 
 			IF NOT EXISTS (
 				SELECT 1

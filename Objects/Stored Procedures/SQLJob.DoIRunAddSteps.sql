@@ -3,9 +3,10 @@ GO
 SET ANSI_NULLS ON
 GO
 
+
 /*
 	Description:
-		This Adds the AG Run Steps to the list of SQLAgentJobs provided.
+		This Adds the DoIRun Steps to the list of SQLAgentJobs provided.
 			If the SQL Agent Jobs passed already has the AGRun steps it will drop and readd them.
 			This is to allow you to change the Config name easily and allow for re-running of the scripts without error
 
@@ -28,10 +29,10 @@ GO
 			@SQLAgentJobs = @SQLAgentJobs -- AGRunJobList
 			, @IsDebug = 1 -- bit
 
-	Github Link: https://github.com/natevdh/natevdhSQLScripts/tree/master/AGRun
+	Github Link: https://github.com/natevdh/SQLJobDoIRun/
 */
-CREATE PROCEDURE [SQLJob].[AGRunAddSteps] (
-	@SQLAgentJobs SQLJob.AGRunJobList READONLY
+CREATE PROCEDURE [SQLJob].[DoIRunAddSteps] (
+	@SQLAgentJobs SQLJob.DoIRunJobList READONLY
 	,@IsDebug BIT = 0 
 )
 AS
@@ -191,8 +192,8 @@ BEGIN
 				FROM @SQLAgentJobs saj
 				WHERE NOT EXISTS (
 					SELECT 1
-					FROM SQLJob.AGRunConfig arc
-					WHERE arc.AGRunConfigName = saj.AGRunConfigName
+					FROM SQLJob.DoIRunConfig arc
+					WHERE arc.DoIRunConfigName = saj.AGRunConfigName
 				)
 			)
 			BEGIN
@@ -202,8 +203,8 @@ BEGIN
 				FROM @SQLAgentJobs saj
 				WHERE NOT EXISTS (
 					SELECT 1
-					FROM SQLJob.AGRunConfig arc
-					WHERE arc.AGRunConfigName = saj.AGRunConfigName
+					FROM SQLJob.DoIRunConfig arc
+					WHERE arc.DoIRunConfigName = saj.AGRunConfigName
 				)
 
 				;THROW 50000,@ErrorText,1;
@@ -296,7 +297,7 @@ BEGIN
 						This ensures that they are setup correctly and that they are 
 						pointed at the config that is most recently created. 
 					*/
-					EXEC [SQLJob].[AGRunDropSteps] @SQLAgentJobName = @SQLAgentJobName		
+					EXEC SQLJob.DoIRunDropSteps @SQLAgentJobName = @SQLAgentJobName		
 				END
 
 				BEGIN --Get info about current state of job
